@@ -26,6 +26,10 @@ return new class extends Migration
 
             $table->text('notes')->nullable();
             $table->timestamps();
+
+            // Speedy Indexes
+            $table->index('occurred_at');
+            $table->index(['occurred_at', 'consistency']);
         });
     }
 
