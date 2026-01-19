@@ -1,17 +1,24 @@
-@props([
-    'sidebar' => false,
-])
+<img
+    {{ $attributes->class([
+        'dark:hidden',
+        'h-8',
+        'w-auto',
+        'max-w-full',
+        'object-contain'
+    ]) }}
+    src="{{ asset('assets/images/logo/logo.png') }}"
+    alt="PooTally Logo"
+/>
 
-@if($sidebar)
-    <flux:sidebar.brand name="Laravel Starter Kit" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-            <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
-        </x-slot>
-    </flux:sidebar.brand>
-@else
-    <flux:brand name="Laravel Starter Kit" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-            <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
-        </x-slot>
-    </flux:brand>
-@endif
+<img
+    {{ $attributes->class([
+        'hidden dark:block',
+        'h-8',
+        'w-auto',
+        'max-w-full',
+        'object-contain'
+    ]) }}
+    src="{{ asset('assets/images/logo/logo-light.png') }}"
+    alt="PooTally Logo"
+/>
+
