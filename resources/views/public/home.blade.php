@@ -8,7 +8,7 @@
             <div class="mx-auto max-w-3xl md:text-center">
                 <p class="text-base/7 font-semibold  text-brown-600 dark:text-brown-400">PooTally</p>
                 <h1 class="mt-2 font-shantell text-5xl font-bold tracking-tight text-pretty text-gray-900 sm:text-5xl md:text-6xl lg:text-balance dark:text-white">
-                    Keep count one <span class="block text-brown-500 dark:text-brown-400 xl:inline">Poo</span> at a time
+                    Keep count, one <span class="block text-brown-500 dark:text-brown-400 xl:inline">Poo</span> at a time
                 </h1>
                 <p class="mt-6 text-lg/7 text-gray-500 dark:text-gray-400  max-w-md md:max-w-xl md:mx-auto">
                     PooTally helps you track your bowel movements with ease, providing helpful insights and statistics.
