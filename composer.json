@@ -1,11 +1,12 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "angusgoody/pootally26",
+    "version": "0.0.1",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
+    "description": "A site to track poos",
     "keywords": [
-        "laravel",
-        "framework"
+        "poo",
+        "Laravel"
     ],
     "license": "MIT",
     "require": {
@@ -13,7 +14,8 @@
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "livewire/flux": "^2.9.0",
+        "livewire/flux": "^2.10",
+        "livewire/flux-pro": "^2.10",
         "livewire/livewire": "^4.0"
     },
     "require-dev": {
@@ -96,5 +98,10 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [{
+        "name": "flux-pro",
+        "type": "composer",
+        "url": "https://composer.fluxui.dev"
+    }]
 }
