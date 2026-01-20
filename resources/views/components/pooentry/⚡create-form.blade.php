@@ -7,8 +7,13 @@ use Livewire\Component;
 use Illuminate\Support\Carbon;
 
 new class extends Component {
+
+    // Custom date/time fields
     public ?string $date;
     public ?string $time;
+
+    // Virtual field for validation
+    public ?string $datetime = null;
     public bool $useCustomDatetime = false;
 
     public ?string $colour = null;
@@ -24,31 +29,50 @@ new class extends Component {
             ],
 
             'consistency' => [
-                'required',
                 Rule::in(array_column(PooConsistency::cases(), 'value')),
             ],
 
-            'date' => $this->useCustomDatetime
-                ? ['required', 'date','before_or_equal:today']
-                : ['nullable'],
+            'notes' => [
+                'nullable',
+                'string',
+                'max:5000',
+            ],
 
-            'time' => $this->useCustomDatetime
-                ? [
-                    'required',
-                    'date_format:H:i',
-                    function ($attribute, $value, $fail) {
+            // Virtual field
+            'datetime' => [
+                function ($attribute, $value, $fail) {
+
+                    // Only validate if using custom date/time
+                    if (!$this->useCustomDatetime) {
+                        return;
+                    }
+
+                    if (!$this->date) {
+                        $fail('Please select a date');
+                        return;
+                    }
+
+                    if (!$this->time) {
+                        $fail('Please select a time');
+                        return;
+                    }
+
+                    try {
                         $datetime = Carbon::createFromFormat(
                             'Y-m-d H:i',
                             "{$this->date} {$this->time}",
                             config('app.timezone')
                         );
+                    } catch (\Exception) {
+                        $fail('The selected date and time are invalid.');
+                        return;
+                    }
 
-                        if ($datetime->isFuture()) {
-                            $fail('The selected date and time cannot be in the future.');
-                        }
-                    },
-                ]
-                : ['nullable'],
+                    if ($datetime->isFuture()) {
+                        $fail('The selected date and time cannot be in the future.');
+                    }
+                },
+            ],
         ];
     }
 
@@ -90,7 +114,7 @@ new class extends Component {
 <div>
 
     @if (session()->has('info'))
-        <flux:callout variant="secondary" icon="information-circle"
+        <flux:callout color="teal" class="mb-4" icon="information-circle"
                       :heading="session('info')"/>
     @endif
 
@@ -98,7 +122,7 @@ new class extends Component {
         <flux:button variant="primary">New Entry</flux:button>
     </flux:modal.trigger>
 
-    <flux:modal name="new-poo-entry" class="md:w-2xl">
+    <flux:modal name="new-poo-entry" class="w-full sm:w-96" flyout variant="floating">
         <form wire:submit.prevent="save" class="space-y-6" x-data="{ showNotes: false, showDatetime: false }">
             <div>
                 <flux:heading size="lg">New Poo Entry</flux:heading>
@@ -160,7 +184,7 @@ new class extends Component {
             </flux:field>
 
             {{-- Date & Time --}}
-            <div x-show="showDatetime" x-transition class="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0">
+            <div x-show="showDatetime" x-transition class="grid grid-cols-2 gap-4">
                 <flux:field>
                     <flux:label>Date</flux:label>
                     <flux:date-picker
@@ -169,7 +193,6 @@ new class extends Component {
                         fixed-weeks
                         max="today"
                     />
-                    <flux:error name="date"/>
                 </flux:field>
 
                 <flux:field>
@@ -180,8 +203,11 @@ new class extends Component {
                         interval="30"
                         max="now"
                     />
-                    <flux:error name="time"/>
                 </flux:field>
+
+                <div class="md:col-span-full">
+                    <flux:error name="datetime"/>
+                </div>
             </div>
 
             {{-- Notes (compact toggle) --}}
