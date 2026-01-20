@@ -5,8 +5,9 @@
         @include('partials.head')
     </head>
     <body class="bg-zinc-50 dark:bg-zinc-800">
-        @yield('master-content')
+        {{ $slot }}
     </body>
     <flux:toast/>
     @fluxScripts
 </html>
+
