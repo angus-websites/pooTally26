@@ -6,14 +6,19 @@ use Livewire\Component;
 use Illuminate\Support\Carbon;
 
 new class extends Component {
-    public string $date;
-    public string $time;
+    public ?string $date;
+    public ?string $time;
 
     public ?string $colour = null;
     public ?string $consistency = null;
 
     public ?string $notes = null;
-    
+
+    protected array $rules = [
+        'date' => ['required', 'date', 'before_or_equal:today'],
+        'time' => ['date_format:H:i'],
+    ];
+
     public function mount(): void
     {
         $now = Carbon::now();
@@ -50,35 +55,10 @@ new class extends Component {
     </flux:modal.trigger>
 
     <flux:modal name="new-poo-entry" class="md:w-2xl">
-        <form wire:submit.prevent="save" class="space-y-6" x-data="{ showNotes: false }">
+        <form wire:submit.prevent="save" class="space-y-6" x-data="{ showNotes: false, showDatetime: false }">
             <div>
                 <flux:heading size="lg">New Poo Entry</flux:heading>
                 <flux:text class="mt-2">Quickly log your entry</flux:text>
-            </div>
-
-            {{-- Date & Time --}}
-            <div class="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0">
-                <flux:field>
-                    <flux:label>Date</flux:label>
-                    <flux:date-picker
-                        wire:model="date"
-                        with-today
-                        fixed-weeks
-                        max="today"
-                    />
-                    <flux:error name="date"/>
-                </flux:field>
-
-                <flux:field>
-                    <flux:label>Time</flux:label>
-                    <flux:time-picker
-                        wire:model="time"
-                        type="input"
-                        interval="30"
-                        max="now"
-                    />
-                    <flux:error name="time"/>
-                </flux:field>
             </div>
 
             {{-- Colour --}}
@@ -128,6 +108,37 @@ new class extends Component {
                 </flux:select>
                 <flux:error name="consistency"/>
             </flux:field>
+
+            {{-- Date (compact toggle) --}}
+            <flux:field variant="inline">
+                <flux:label>Modify Date / Time</flux:label>
+                <flux:switch x-model="showDatetime"/>
+            </flux:field>
+
+            {{-- Date & Time --}}
+            <div x-show="showDatetime" x-transition class="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0">
+                <flux:field>
+                    <flux:label>Date</flux:label>
+                    <flux:date-picker
+                        wire:model="date"
+                        with-today
+                        fixed-weeks
+                        max="today"
+                    />
+                    <flux:error name="date"/>
+                </flux:field>
+
+                <flux:field>
+                    <flux:label>Time</flux:label>
+                    <flux:time-picker
+                        wire:model="time"
+                        type="input"
+                        interval="30"
+                        max="now"
+                    />
+                    <flux:error name="time"/>
+                </flux:field>
+            </div>
 
             {{-- Notes (compact toggle) --}}
             <flux:field variant="inline">
