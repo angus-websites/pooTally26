@@ -2,22 +2,55 @@
 
 use App\Enum\PooColour;
 use App\Enum\PooConsistency;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
 
 new class extends Component {
     public ?string $date;
     public ?string $time;
+    public bool $useCustomDatetime = false;
 
     public ?string $colour = null;
     public ?string $consistency = null;
 
     public ?string $notes = null;
 
-    protected array $rules = [
-        'date' => ['required', 'date', 'before_or_equal:today'],
-        'time' => ['date_format:H:i'],
-    ];
+    protected function rules(): array
+    {
+        return [
+            'colour' => [
+                Rule::in(array_column(PooColour::cases(), 'value')),
+            ],
+
+            'consistency' => [
+                'required',
+                Rule::in(array_column(PooConsistency::cases(), 'value')),
+            ],
+
+            'date' => $this->useCustomDatetime
+                ? ['required', 'date','before_or_equal:today']
+                : ['nullable'],
+
+            'time' => $this->useCustomDatetime
+                ? [
+                    'required',
+                    'date_format:H:i',
+                    function ($attribute, $value, $fail) {
+                        $datetime = Carbon::createFromFormat(
+                            'Y-m-d H:i',
+                            "{$this->date} {$this->time}",
+                            config('app.timezone')
+                        );
+
+                        if ($datetime->isFuture()) {
+                            $fail('The selected date and time cannot be in the future.');
+                        }
+                    },
+                ]
+                : ['nullable'],
+        ];
+    }
 
     public function mount(): void
     {
@@ -43,13 +76,24 @@ new class extends Component {
 
     public function save(): void
     {
-        // validation + persistence later
+        // Validate input
+        $this->validate();
+
+        session()->flash('info', 'Validated');
+
+        //echo "Using custom datetime: " . ($this->useCustomDatetime ? 'yes' : 'no') . "\n";
     }
 
 };
 ?>
 
 <div>
+
+    @if (session()->has('info'))
+        <flux:callout variant="secondary" icon="information-circle"
+                      :heading="session('info')"/>
+    @endif
+
     <flux:modal.trigger name="new-poo-entry">
         <flux:button variant="primary">New Entry</flux:button>
     </flux:modal.trigger>
@@ -112,7 +156,7 @@ new class extends Component {
             {{-- Date (compact toggle) --}}
             <flux:field variant="inline">
                 <flux:label>Modify Date / Time</flux:label>
-                <flux:switch x-model="showDatetime"/>
+                <flux:switch x-model="showDatetime" @change="$wire.useCustomDatetime = showDatetime"/>
             </flux:field>
 
             {{-- Date & Time --}}
