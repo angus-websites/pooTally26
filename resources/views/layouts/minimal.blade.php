@@ -1,13 +1,10 @@
-@extends('layouts.master')
-
-@section('title', $title ?? null)
-
-@section('master-content')
+<x-layouts::master>
+    @section('title', $title ?? null)
     <div class="min-h-screen flex flex-col">
         <x-public.header/>
         <div class="flex-1 flex">
-            @yield('content')
+            {{ $slot }}
         </div>
         <x-public.footer/>
     </div>
-@endsection
+</x-layouts::master>
