@@ -1,35 +1,57 @@
 <x-layouts::app :title="__('Dashboard')">
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
 
-        <livewire:pooentry.create-form/>
+        <div class="pt-24 pb-10">
+            <div class="mx-auto max-w-2xl lg:max-w-none">
+                <div class="text-center">
+                    <h1 class="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl dark:text-white">
+                        Welcome to your Poo Dashboard</h1>
+                    <p class="mt-4 text-lg/8 text-gray-600 dark:text-gray-300">
+                        Here you can track your poo statistics and recent entries.
+                    </p>
 
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-scroll rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <dl class="divide-y divide-gray-100 dark:divide-white/10">
-                    <div class="py-6 grid grid-cols-2 gap-4 px-5">
-                        <dt class="text-base font-medium text-gray-900 dark:text-gray-100">Total Poos all time</dt>
-                        <dd class="text-base text-gray-700 dark:text-gray-400">
-                            10
+                    <div class="mt-10">
+                        <livewire:pooentry.create-form/>
+                    </div>
+
+                </div>
+                <dl class="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
+                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
+                            Total Poos Logged
+                        </dt>
+                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            100
                         </dd>
                     </div>
-                    <div class="py-6 grid grid-cols-3 gap-4 px-5">
-                        <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Application for</dt>
-                        <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">Backend
-                            Developer
+                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
+                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
+                            Total Poos (Last 7 days)
+                        </dt>
+                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            6
+                        </dd>
+                    </div>
+                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
+                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
+                            Total Poos (This Month)
+                        </dt>
+                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            24
+                        </dd>
+                    </div>
+                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
+                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
+                            Average Poos Per day
+                        </dt>
+                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                            1.2
                         </dd>
                     </div>
                 </dl>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern
-                    class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20"/>
-            </div>
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <livewire:pooentry.show-recent/>
-        </div>
+
+        <livewire:pooentry.show-recent/>
     </div>
 </x-layouts::app>

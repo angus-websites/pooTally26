@@ -34,7 +34,7 @@ new class extends Component {
 };
 ?>
 
-<div class="space-y-2 p-6">
+<div class="space-y-2">
     <h3 class="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
         Recent Poos
     </h3>
