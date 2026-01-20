@@ -4,11 +4,11 @@ namespace App\Enum;
 
 enum PooColour: string
 {
-    case brown = 'brown';
-    case green = 'green';
-    case yellow = 'yellow';
-    case black = 'black';
-    case red = 'red';
+    case BROWN = 'brown';
+    case GREEN = 'green';
+    case YELLOW = 'yellow';
+    case BLACK = 'black';
+    case RED = 'red';
 
     /**
      * Return all enum values as an array

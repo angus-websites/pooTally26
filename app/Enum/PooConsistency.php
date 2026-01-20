@@ -4,9 +4,9 @@ namespace App\Enum;
 
 enum PooConsistency: string
 {
-    case runny = 'runny';
-    case normal = 'normal';
-    case hard = 'hard';
+    case RUNNY = 'runny';
+    case NORMAL = 'normal';
+    case HARD = 'hard';
 
     /**
      * Return all enum values as an array
