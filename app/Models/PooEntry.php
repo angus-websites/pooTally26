@@ -4,12 +4,12 @@ namespace App\Models;
 
 use App\Enum\PooColour;
 use App\Enum\PooConsistency;
-use Carbon\Carbon;
 use Database\Factories\PooEntryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -33,6 +33,7 @@ class PooEntry extends Model
     ];
 
     protected $casts = [
+        'occurred_at' => 'datetime',
         'consistency' => PooConsistency::class,
         'colour' => PooColour::class,
     ];
