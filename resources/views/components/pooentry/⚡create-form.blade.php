@@ -141,7 +141,7 @@ new class extends Component {
         Flux::modal('new-poo-entry')->close();
 
         // Reset form
-        $this->mount();
+        $this->reset();
     }
 
 };
@@ -159,7 +159,12 @@ new class extends Component {
     </flux:modal.trigger>
 
     <flux:modal name="new-poo-entry" class="w-full sm:w-96" flyout variant="floating">
-        <form wire:submit.prevent="save" class="space-y-6" x-data="{ showNotes: false, showDatetime: false }">
+        <form
+            wire:submit.prevent="save"
+            class="space-y-6"
+            x-data="{ showNotes: false, showDatetime: false }"
+            x-on:poo-entry:refresh.window="showNotes = false; showDatetime = false"
+        >
             <div>
                 <flux:heading size="lg">New Poo Entry</flux:heading>
                 <flux:text class="mt-2">Quickly log your entry</flux:text>
