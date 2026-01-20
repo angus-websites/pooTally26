@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('poo_entries', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+
             $table->dateTime('occurred_at');
 
             $table->enum('consistency', PooConsistency::values())

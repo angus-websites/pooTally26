@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Contracts;
+
 use App\Models\PooEntry;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 interface PooEntryRepositoryInterface
 {
     public function find(int $id): ?PooEntry;
+
+    public function forUser(User $user): Collection;
 
     public function create(array $data): PooEntry;
 

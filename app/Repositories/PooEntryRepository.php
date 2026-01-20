@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\PooEntryRepositoryInterface;
 use App\Models\PooEntry;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -12,6 +13,13 @@ class PooEntryRepository implements PooEntryRepositoryInterface
     public function find(int $id): ?PooEntry
     {
         return PooEntry::find($id);
+    }
+
+    public function forUser(User $user): Collection
+    {
+        return PooEntry::where('user_id', $user->id)
+            ->orderBy('occurred_at', 'desc')
+            ->get();
     }
 
     public function all(): Collection

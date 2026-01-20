@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Database\Factories\PooEntryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder;
 
 /**
@@ -36,11 +37,13 @@ class PooEntry extends Model
         'colour' => PooColour::class,
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * Scope a query to only include entries for a given year.
-     * @param Builder $query
-     * @param int $year
-     * @return Builder
      */
     public function scopeForYear(Builder $query, int $year): Builder
     {
@@ -49,10 +52,6 @@ class PooEntry extends Model
 
     /**
      * Scope a query to only include entries for a given month of a year.
-     * @param Builder $query
-     * @param int $year
-     * @param int $month
-     * @return Builder
      */
     public function scopeForMonth(
         Builder $query,
@@ -65,10 +64,6 @@ class PooEntry extends Model
 
     /**
      * Scope a query to only include entries between two dates.
-     * @param Builder $query
-     * @param Carbon $from
-     * @param Carbon $to
-     * @return Builder
      */
     public function scopeBetweenDates(
         Builder $query,
