@@ -1,4 +1,4 @@
-<x-layouts::public title="Welcome">
+<x-layouts::public title="Welcome to PooTally">
     <x-page-container>
         <div>
             <div class="mx-auto max-w-3xl md:text-center">
