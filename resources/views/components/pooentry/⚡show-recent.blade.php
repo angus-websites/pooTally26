@@ -1,48 +1,54 @@
 <?php
 
-use App\Models\PooEntry;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 new class extends Component {
 
+    public Collection $entries;
 
-    public function with(){
-        return [
-            'entries' => Auth::user()->pooEntries()
+    public function mount(): void
+    {
+        $this->fetchRecentEntries();
+    }
+
+    protected function fetchRecentEntries(): void
+    {
+        $this->entries = Auth::user()->pooEntries()
             ->latest('occurred_at')
             ->limit(5)
-            ->get()
-        ];
+            ->get();
     }
+
+    protected $listeners = [
+        'poo-entry:saved' => 'refreshEntries',
+    ];
+
+    public function refreshEntries(): void
+    {
+        $this->fetchRecentEntries();
+    }
+
 
 };
 ?>
 
 <div class="space-y-2 p-6">
     <h3 class="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
-        Recent Logs
+        Recent Poos
     </h3>
 
     @forelse ($entries as $entry)
-        <div wire:key="{{ $entry->id }}"
-             class="flex items-center justify-between rounded-lg border border-zinc-200 dark:border-zinc-700 p-3">
-            <div class="flex flex-col">
-                <span class="text-sm font-medium">
-                    {{ $entry->consistency }} · {{ $entry->colour }}
-                </span>
-
-                <span class="text-xs text-zinc-500">
-                    {{ $entry->occurred_at->format('M j, H:i') }}
-                    Bruh
-                </span>
+        <flux:card wire:key="{{ $entry->id }}" size="sm" >
+            <flux:heading class="flex items-center gap-2">
+                {{ $entry->occurred_at->format('M j, H:i') }}
+            </flux:heading>
+            <div class="mt-2 flex flex-row gap-x-4">
+                <x-poo-colour-badge :colour="$entry->colour"/>
+                <flux:badge size="sm">{{ $entry->consistency }}</flux:badge>
             </div>
-
-            @if ($entry->notes)
-                <span class="text-zinc-400 text-sm">📝</span>
-            @endif
-        </div>
+        </flux:card>
     @empty
         <p class="text-sm text-zinc-500">
             No logs yet.

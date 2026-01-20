@@ -2,6 +2,8 @@
 
 use App\Enum\PooColour;
 use App\Enum\PooConsistency;
+use App\Services\PooEntryService;
+use Flux\Flux;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
@@ -76,6 +78,7 @@ new class extends Component {
         ];
     }
 
+
     public function mount(): void
     {
         $now = Carbon::now();
@@ -88,24 +91,54 @@ new class extends Component {
         $this->consistency = PooConsistency::NORMAL->value;
     }
 
+    /**
+     * Get available colours
+     * @return array<PooColour>
+     */
     public function getColoursProperty(): array
     {
         return PooColour::cases();
     }
 
+    /**
+     * Get available consistencies
+     * @return array<PooConsistency>
+     */
     public function getConsistenciesProperty(): array
     {
         return PooConsistency::cases();
     }
 
-    public function save(): void
+
+    public function save(PooEntryService $pooEntryService): void
     {
         // Validate input
-        $this->validate();
+        $data = $this->validate();
 
-        session()->flash('info', 'Validated');
+        // Create entry
+        $pooEntryService->create([
+            'colour' => $data['colour'],
+            'consistency' => $data['consistency'],
+            'occurred_at' => $this->useCustomDatetime
+                ? Carbon::createFromFormat(
+                    'Y-m-d H:i',
+                    "{$this->date} {$this->time}",
+                    config('app.timezone')
+                )
+                : Carbon::now(),
+            'notes' => $this->notes
+        ]);
 
-        //echo "Using custom datetime: " . ($this->useCustomDatetime ? 'yes' : 'no') . "\n";
+        Flux::toast(
+            text: "Your poo has been logged!",
+            variant: 'success',
+        );
+
+        // Dispatch event to allow other components to update
+        $this->dispatch('poo-entry:saved');
+
+        // Close modal
+        Flux::modal('new-poo-entry')->close();
     }
 
 };
@@ -119,7 +152,7 @@ new class extends Component {
     @endif
 
     <flux:modal.trigger name="new-poo-entry">
-        <flux:button variant="primary">New Entry</flux:button>
+        <flux:button variant="primary">New Poo</flux:button>
     </flux:modal.trigger>
 
     <flux:modal name="new-poo-entry" class="w-full sm:w-96" flyout variant="floating">
@@ -138,20 +171,7 @@ new class extends Component {
                 >
                     @foreach ($this->colours as $colour)
                         <flux:select.option value="{{ $colour->value }}">
-                            <div class="flex items-center gap-2">
-                                <span
-                                    class="h-3 w-3 rounded-full
-                                        @switch($colour->value)
-                                            @case('brown') bg-brown-500 dark:bg-brown-400 @break
-                                            @case('green') bg-green-700 dark:bg-green-700 @break
-                                            @case('yellow') bg-yellow-400 @break
-                                            @case('black') bg-black @break
-                                            @case('red') bg-red-500 @break
-                                        @endswitch
-                                    "
-                                ></span>
-                                {{ ucfirst($colour->value) }}
-                            </div>
+                            <x-poo-colour-badge :colour="$colour"/>
                         </flux:select.option>
 
                     @endforeach

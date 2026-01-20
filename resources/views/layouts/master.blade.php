@@ -7,6 +7,6 @@
     <body class="bg-zinc-50 dark:bg-zinc-800">
         @yield('master-content')
     </body>
-{{--    <flux:toast/>--}}
+    <flux:toast/>
     @fluxScripts
 </html>

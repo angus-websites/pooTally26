@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Contracts\PooEntryRepositoryInterface;
 use App\Models\PooEntry;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Service class for managing PooEntry entities.
@@ -26,9 +28,14 @@ class PooEntryService
         return $this->repository->find($id);
     }
 
-    public function create(array $data): PooEntry
+    public function create(array $data, ?User $user = null): PooEntry
     {
-        return $this->repository->create($data);
+        // If User not provided, set to currently authenticated user
+        if (! $user) {
+            $user = Auth::user();
+        }
+
+        return $user->pooEntries()->create($data);
     }
 
     public function update(int $id, array $data): PooEntry
