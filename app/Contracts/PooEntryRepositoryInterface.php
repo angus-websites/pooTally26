@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 use App\Models\PooEntry;
 use App\Models\User;
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
 interface PooEntryRepositoryInterface
@@ -17,16 +17,16 @@ interface PooEntryRepositoryInterface
 
     public function inDateRange(
         User $user,
-        Carbon $from,
-        Carbon $to
+        CarbonInterface $from,
+        CarbonInterface $to
     ): Collection;
 
     public function count(User $user): int;
 
     public function countInDateRange(
         User $user,
-        Carbon $from,
-        Carbon $to
+        CarbonInterface $from,
+        CarbonInterface $to
     ): int;
 
     public function create(User $user, array $data): PooEntry;

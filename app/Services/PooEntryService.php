@@ -25,7 +25,6 @@ class PooEntryService
         if (! $user) {
             $user = Auth::user();
         }
-
         return $this->repository->create($user, $data);
     }
 

@@ -135,10 +135,13 @@ new class extends Component {
         );
 
         // Dispatch event to allow other components to update
-        $this->dispatch('poo-entry:saved');
+        $this->dispatch('poo-entry:refresh');
 
         // Close modal
         Flux::modal('new-poo-entry')->close();
+
+        // Reset form
+        $this->mount();
     }
 
 };

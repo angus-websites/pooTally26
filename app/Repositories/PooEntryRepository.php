@@ -5,8 +5,9 @@ namespace App\Repositories;
 use App\Contracts\PooEntryRepositoryInterface;
 use App\Models\PooEntry;
 use App\Models\User;
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class PooEntryRepository implements PooEntryRepositoryInterface
 {
@@ -39,8 +40,8 @@ class PooEntryRepository implements PooEntryRepositoryInterface
 
     public function inDateRange(
         User $user,
-        Carbon $from,
-        Carbon $to
+        CarbonInterface $from,
+        CarbonInterface $to
     ): Collection {
         return $this->queryFor($user)
             ->whereBetween('occurred_at', [$from, $to])
@@ -55,8 +56,8 @@ class PooEntryRepository implements PooEntryRepositoryInterface
 
     public function countInDateRange(
         User $user,
-        Carbon $from,
-        Carbon $to
+        CarbonInterface $from,
+        CarbonInterface $to
     ): int {
         return $this->queryFor($user)
             ->whereBetween('occurred_at', [$from, $to])
@@ -65,10 +66,13 @@ class PooEntryRepository implements PooEntryRepositoryInterface
 
     public function create(User $user, array $data): PooEntry
     {
-        return PooEntry::create([
-            ...$data,
-            'user_id' => $user->id,
-        ]);
+
+        $combinedData = array_merge($data, ['user_id' => $user->id]);
+
+
+        return PooEntry::create(
+            $combinedData
+        );
     }
 
     public function update(PooEntry $entry, array $data): PooEntry

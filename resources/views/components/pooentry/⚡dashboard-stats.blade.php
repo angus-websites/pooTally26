@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\PooStatService;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class extends Component {
@@ -10,6 +11,12 @@ new class extends Component {
     public float $averagePoosPerDay = 0.0;
 
     public function mount(PooStatService $statService)
+    {
+        $this->refreshStats($statService);
+    }
+
+    #[On('poo-entry:refresh')]
+    public function refreshStats(PooStatService $statService): void
     {
         $user = auth()->user();
         $this->totalPoos = $statService->poosTotal($user);
@@ -26,7 +33,7 @@ new class extends Component {
             Total Poos Logged
         </dt>
         <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            100
+            {{ $totalPoos }}
         </dd>
     </div>
     <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
@@ -34,7 +41,7 @@ new class extends Component {
             Total Poos (Last 7 days)
         </dt>
         <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            6
+            {{ $poosLast7Days }}
         </dd>
     </div>
     <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
@@ -42,7 +49,7 @@ new class extends Component {
             Total Poos (This Month)
         </dt>
         <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            24
+            {{ $poosThisMonth }}
         </dd>
     </div>
     <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
@@ -50,7 +57,7 @@ new class extends Component {
             Average Poos Per day
         </dt>
         <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            1.2
+            {{ number_format($averagePoosPerDay, 2) }}
         </dd>
     </div>
 </dl>

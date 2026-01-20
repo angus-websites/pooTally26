@@ -65,7 +65,7 @@ class PooStatService
         }
 
         // Calculate the number of days since the first entry (inclusive)
-        $daysSinceFirstEntry = now()->diffInDays($firstEntry->occurred_at) + 1;
+        $daysSinceFirstEntry = abs(now()->diffInDays($firstEntry->occurred_at)) + 1;
 
         // Calculate average with float precision
         return round($totalPoos / $daysSinceFirstEntry, 2);

@@ -15,40 +15,10 @@
                     </div>
 
                 </div>
-                <dl class="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
-                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
-                            Total Poos Logged
-                        </dt>
-                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            100
-                        </dd>
-                    </div>
-                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
-                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
-                            Total Poos (Last 7 days)
-                        </dt>
-                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            6
-                        </dd>
-                    </div>
-                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
-                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
-                            Total Poos (This Month)
-                        </dt>
-                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            24
-                        </dd>
-                    </div>
-                    <div class="flex flex-col bg-gray-400/5 p-8 dark:bg-white/5">
-                        <dt class="text-sm/6 font-semibold text-gray-600 dark:text-gray-300">
-                            Average Poos Per day
-                        </dt>
-                        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            1.2
-                        </dd>
-                    </div>
-                </dl>
+
+                <div class="mt-5">
+                    <livewire:pooentry.dashboard-stats/>
+                </div>
             </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class extends Component {
@@ -10,24 +11,16 @@ new class extends Component {
 
     public function mount(): void
     {
-        $this->fetchRecentEntries();
+        $this->refreshEntries();
     }
 
-    protected function fetchRecentEntries(): void
+    #[On('poo-entry:refresh')]
+    public function refreshEntries(): void
     {
         $this->entries = Auth::user()->pooEntries()
             ->latest('occurred_at')
             ->limit(5)
             ->get();
-    }
-
-    protected $listeners = [
-        'poo-entry:saved' => 'refreshEntries',
-    ];
-
-    public function refreshEntries(): void
-    {
-        $this->fetchRecentEntries();
     }
 
 
@@ -40,7 +33,7 @@ new class extends Component {
     </h3>
 
     @forelse ($entries as $entry)
-        <flux:card wire:key="{{ $entry->id }}" size="sm" >
+        <flux:card wire:key="{{ $entry->id }}" size="sm">
             <flux:heading class="flex items-center gap-2">
                 {{ $entry->occurred_at->format('M j, H:i') }}
             </flux:heading>
