@@ -14,7 +14,7 @@ enum PooConsistency: string
     public static function values(): array
     {
         return array_map(
-            fn(self $case) => $case->value,
+            fn (self $case) => $case->value,
             self::cases()
         );
     }
