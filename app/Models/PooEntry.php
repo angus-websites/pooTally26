@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property ?string $notes
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
+ *
  */
 class PooEntry extends Model
 {
@@ -44,6 +45,14 @@ class PooEntry extends Model
     }
 
     /**
+     * Scope a query to only include entries for a given user.
+     */
+    public function scopeForUser($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
+    }
+
+    /**
      * Scope a query to only include entries for a given year.
      */
     public function scopeForYear(Builder $query, int $year): Builder
@@ -63,14 +72,4 @@ class PooEntry extends Model
             ->whereMonth('occurred_at', $month);
     }
 
-    /**
-     * Scope a query to only include entries between two dates.
-     */
-    public function scopeBetweenDates(
-        Builder $query,
-        Carbon $from,
-        Carbon $to
-    ): Builder {
-        return $query->whereBetween('occurred_at', [$from, $to]);
-    }
 }
