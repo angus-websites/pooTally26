@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 interface PooEntryRepositoryInterface
 {
-    public function find(User $user, int $id): ?PooEntry;
+    public function find(int $id): ?PooEntry;
 
     public function first(User $user): ?PooEntry;
 

@@ -19,9 +19,9 @@ class PooEntryRepository implements PooEntryRepositoryInterface
         return PooEntry::query()->forUser($user);
     }
 
-    public function find(User $user, int $id): ?PooEntry
+    public function find(int $id): ?PooEntry
     {
-        return $this->queryFor($user)->find($id);
+        return PooEntry::find($id);
     }
 
     public function first(User $user): ?PooEntry

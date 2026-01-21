@@ -17,6 +17,14 @@ class PooEntryService
     ) {}
 
     /**
+     * Find a PooEntry by its ID.
+     */
+    public function find(int $id): ?PooEntry
+    {
+        return $this->repository->find($id);
+    }
+
+    /**
      * Create a new PooEntry.
      */
     public function create(array $data, ?User $user = null): PooEntry
@@ -25,7 +33,12 @@ class PooEntryService
         if (! $user) {
             $user = Auth::user();
         }
+
         return $this->repository->create($user, $data);
     }
 
+    public function delete(PooEntry $entry): void
+    {
+        $this->repository->delete($entry);
+    }
 }
