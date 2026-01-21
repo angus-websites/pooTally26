@@ -3,6 +3,7 @@
 ])
 
 
+@if($colour)
 <div class="flex items-center gap-2">
     <span
 
@@ -19,3 +20,4 @@
     ></span>
     {{ ucfirst($colour->value) }}
 </div>
+@endif

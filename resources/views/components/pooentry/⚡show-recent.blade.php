@@ -39,7 +39,7 @@ new class extends Component {
             </flux:heading>
             <div class="mt-2 flex flex-row gap-x-4">
                 <x-poo-colour-badge :colour="$entry->colour"/>
-                <flux:badge size="sm">{{ $entry->consistency }}</flux:badge>
+                <x-poo-consistency-badge :consistency="$entry->consistency"/>
             </div>
             @if($entry->notes)
                 <div class="mt-3 border-t pt-2 dark:border-t-zinc-600">
@@ -50,8 +50,11 @@ new class extends Component {
             @endif
         </flux:card>
     @empty
-        <p class="text-sm text-zinc-500">
-            No logs yet.
-        </p>
+
+        <div class="text-center mt-8">
+            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">No Poos found</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by logging a new poo.</p>
+        </div>
+
     @endforelse
 </div>
