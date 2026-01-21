@@ -98,7 +98,7 @@ new class extends Component {
     @empty
 
         <div class="text-center mt-8">
-            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">No Poos found</p>
+            <p class="mt-2 text-sm font-semibold text-zinc-900 dark:text-white">No Poos found</p>
         </div>
 
     @endforelse
