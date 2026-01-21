@@ -42,17 +42,11 @@ new class extends Component {
                 <flux:badge size="sm">{{ $entry->consistency }}</flux:badge>
             </div>
             @if($entry->notes)
-                <flux:accordion class="mt-4" variant="reverse">
-                    <flux:accordion.item>
-                        <flux:accordion.heading>Notes</flux:accordion.heading>
-
-                        <flux:accordion.content>
-                            <p class="text-sm text-zinc-700 dark:text-zinc-300">
-                                {{ $entry->notes }}
-                            </p>
-                        </flux:accordion.content>
-                    </flux:accordion.item>
-                </flux:accordion>
+                <div class="mt-3 border-t pt-2 dark:border-t-zinc-600">
+                    <flux:text >
+                        <span>Notes:</span> <span class="ml-1">{{$entry->notes}}</span>
+                    </flux:text>
+                </div>
             @endif
         </flux:card>
     @empty
