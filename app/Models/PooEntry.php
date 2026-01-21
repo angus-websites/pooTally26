@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property ?string $notes
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
+ *
  */
 class PooEntry extends Model
 {
@@ -26,6 +27,7 @@ class PooEntry extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'occurred_at',
         'consistency',
         'colour',
@@ -41,6 +43,14 @@ class PooEntry extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope a query to only include entries for a given user.
+     */
+    public function scopeForUser($query, User $user)
+    {
+        return $query->where('user_id', $user->id);
     }
 
     /**
@@ -63,14 +73,4 @@ class PooEntry extends Model
             ->whereMonth('occurred_at', $month);
     }
 
-    /**
-     * Scope a query to only include entries between two dates.
-     */
-    public function scopeBetweenDates(
-        Builder $query,
-        Carbon $from,
-        Carbon $to
-    ): Builder {
-        return $query->whereBetween('occurred_at', [$from, $to]);
-    }
 }

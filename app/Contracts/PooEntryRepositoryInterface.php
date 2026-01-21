@@ -4,22 +4,34 @@ namespace App\Contracts;
 
 use App\Models\PooEntry;
 use App\Models\User;
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 
 interface PooEntryRepositoryInterface
 {
-    public function find(int $id): ?PooEntry;
+    public function find(User $user, int $id): ?PooEntry;
 
-    public function forUser(User $user): Collection;
+    public function first(User $user): ?PooEntry;
 
-    public function create(array $data): PooEntry;
+    public function all(User $user): Collection;
+
+    public function inDateRange(
+        User $user,
+        CarbonInterface $from,
+        CarbonInterface $to
+    ): Collection;
+
+    public function count(User $user): int;
+
+    public function countInDateRange(
+        User $user,
+        CarbonInterface $from,
+        CarbonInterface $to
+    ): int;
+
+    public function create(User $user, array $data): PooEntry;
 
     public function update(PooEntry $entry, array $data): PooEntry;
 
     public function delete(PooEntry $entry): void;
-
-    public function forDateRange(Carbon $from, Carbon $to): Collection;
-
-    public function all(): Collection;
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class extends Component {
@@ -10,24 +11,16 @@ new class extends Component {
 
     public function mount(): void
     {
-        $this->fetchRecentEntries();
+        $this->refreshEntries();
     }
 
-    protected function fetchRecentEntries(): void
+    #[On('poo-entry:refresh')]
+    public function refreshEntries(): void
     {
         $this->entries = Auth::user()->pooEntries()
             ->latest('occurred_at')
             ->limit(5)
             ->get();
-    }
-
-    protected $listeners = [
-        'poo-entry:saved' => 'refreshEntries',
-    ];
-
-    public function refreshEntries(): void
-    {
-        $this->fetchRecentEntries();
     }
 
 
@@ -40,18 +33,28 @@ new class extends Component {
     </h3>
 
     @forelse ($entries as $entry)
-        <flux:card wire:key="{{ $entry->id }}" size="sm" >
+        <flux:card wire:key="{{ $entry->id }}" size="sm">
             <flux:heading class="flex items-center gap-2">
                 {{ $entry->occurred_at->format('M j, H:i') }}
             </flux:heading>
             <div class="mt-2 flex flex-row gap-x-4">
                 <x-poo-colour-badge :colour="$entry->colour"/>
-                <flux:badge size="sm">{{ $entry->consistency }}</flux:badge>
+                <x-poo-consistency-badge :consistency="$entry->consistency"/>
             </div>
+            @if($entry->notes)
+                <div class="mt-3 border-t pt-2 dark:border-t-zinc-600">
+                    <flux:text >
+                        <span>Notes:</span> <span class="ml-1">{{$entry->notes}}</span>
+                    </flux:text>
+                </div>
+            @endif
         </flux:card>
     @empty
-        <p class="text-sm text-zinc-500">
-            No logs yet.
-        </p>
+
+        <div class="text-center mt-8">
+            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">No Poos found</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by logging a new poo.</p>
+        </div>
+
     @endforelse
 </div>
