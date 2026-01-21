@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EntryController;
 use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
@@ -8,9 +9,16 @@ Route::get('/', function () {
     return view('public.home');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// App Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Dashboard
+    Route::view('dashboard', 'app.dashboard')->name('dashboard');
+
+    // Entries
+    Route::resource('entries', EntryController::class)->only(['index']);
+
+});
 
 // System information
 Route::get('/version', [SystemController::class, 'version']);
