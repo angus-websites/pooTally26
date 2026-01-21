@@ -41,6 +41,19 @@ new class extends Component {
                 <x-poo-colour-badge :colour="$entry->colour"/>
                 <flux:badge size="sm">{{ $entry->consistency }}</flux:badge>
             </div>
+            @if($entry->notes)
+                <flux:accordion class="mt-4" variant="reverse">
+                    <flux:accordion.item>
+                        <flux:accordion.heading>Notes</flux:accordion.heading>
+
+                        <flux:accordion.content>
+                            <p class="text-sm text-zinc-700 dark:text-zinc-300">
+                                {{ $entry->notes }}
+                            </p>
+                        </flux:accordion.content>
+                    </flux:accordion.item>
+                </flux:accordion>
+            @endif
         </flux:card>
     @empty
         <p class="text-sm text-zinc-500">

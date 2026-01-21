@@ -53,6 +53,12 @@ class PooStatService
             now());
     }
 
+    /**
+     * Calculate the average number of Poo entries per day for a user.
+     *
+     * @param  User  $user  The user to get stats for.
+     * @return float Average number of Poo entries per day.
+     */
     public function averagePoosPerDay(User $user): float
     {
         $totalPoos = $this->poosTotal($user);
