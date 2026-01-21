@@ -57,6 +57,10 @@ class PooStatService
     {
         $totalPoos = $this->poosTotal($user);
 
+        if ($totalPoos === 0) {
+            return 0.0;
+        }
+
         // Get the date of the first Poo entry
         $firstEntry = $this->repository->first($user);
 
