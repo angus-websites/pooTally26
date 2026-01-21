@@ -5,6 +5,7 @@ namespace App\Contracts;
 use App\Models\PooEntry;
 use App\Models\User;
 use Carbon\CarbonInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface PooEntryRepositoryInterface
@@ -14,6 +15,11 @@ interface PooEntryRepositoryInterface
     public function first(User $user): ?PooEntry;
 
     public function all(User $user): Collection;
+
+    public function paginate(
+        User $user,
+        int $perPage
+    ): LengthAwarePaginator;
 
     public function inDateRange(
         User $user,

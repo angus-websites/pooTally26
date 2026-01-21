@@ -52,9 +52,14 @@ class PooEntryObserver
      */
     protected function invalidate(int $userId): void
     {
+        // Stats
         Cache::forget("poo:stats:{$userId}:total");
         Cache::forget("poo:stats:{$userId}:last7");
         Cache::forget("poo:stats:{$userId}:month:".now()->format('Y-m'));
         Cache::forget("poo:stats:{$userId}:average:".now()->toDateString());
+
+        // Latest
+        $limit = config('poo.dashboard_recent_limit', 5);
+        Cache::forget("poo:entries:{$userId}:latest:{$limit}");
     }
 }

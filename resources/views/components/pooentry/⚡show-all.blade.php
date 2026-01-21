@@ -19,9 +19,7 @@ new class extends Component {
     #[Computed]
     public function entries()
     {
-        return Auth::user()->pooEntries()
-            ->latest('occurred_at')
-            ->paginate(20);
+        return app(PooEntryService::class)->paginatePoos();
     }
 
     public function confirmDelete(int $entryId): void

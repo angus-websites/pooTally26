@@ -10,6 +10,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
+/**
+ * @property $id
+ * @property $name
+ * @property $email
+ * @property $password
+ * @property $email_verified_at
+
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */

@@ -6,8 +6,8 @@ use App\Contracts\PooEntryRepositoryInterface;
 use App\Models\PooEntry;
 use App\Models\User;
 use Carbon\CarbonInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 class PooEntryRepository implements PooEntryRepositoryInterface
 {
@@ -27,15 +27,24 @@ class PooEntryRepository implements PooEntryRepositoryInterface
     public function first(User $user): ?PooEntry
     {
         return $this->queryFor($user)
-            ->orderBy('occurred_at')
+            ->latest('occurred_at')
             ->first();
     }
 
     public function all(User $user): Collection
     {
         return $this->queryFor($user)
-            ->orderByDesc('occurred_at')
+            ->latest('occurred_at')
             ->get();
+    }
+
+    public function paginate(
+        User $user,
+        int $perPage
+    ): LengthAwarePaginator {
+        return $this->queryFor($user)
+            ->latest('occurred_at')
+            ->paginate($perPage);
     }
 
     public function inDateRange(
@@ -45,7 +54,7 @@ class PooEntryRepository implements PooEntryRepositoryInterface
     ): Collection {
         return $this->queryFor($user)
             ->whereBetween('occurred_at', [$from, $to])
-            ->orderByDesc('occurred_at')
+            ->latest('occurred_at')
             ->get();
     }
 
@@ -68,7 +77,6 @@ class PooEntryRepository implements PooEntryRepositoryInterface
     {
 
         $combinedData = array_merge($data, ['user_id' => $user->id]);
-
 
         return PooEntry::create(
             $combinedData
