@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Contracts\PooEntryRepositoryInterface;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Service for managing Poo statistics.
@@ -22,7 +23,10 @@ class PooStatService
      */
     public function poosTotal(User $user): int
     {
-        return $this->repository->count($user);
+        return Cache::rememberForever(
+            "poo:stats:{$user->id}:total",
+            fn () => $this->repository->count($user)
+        );
     }
 
     /**
@@ -33,10 +37,14 @@ class PooStatService
      */
     public function poosLast7Days(User $user): int
     {
-        return $this->repository->countInDateRange(
-            $user,
-            now()->subDays(7),
-            now());
+        return Cache::rememberForever(
+            "poo:stats:{$user->id}:last7",
+            fn () => $this->repository->countInDateRange(
+                $user,
+                now()->subDays(7),
+                now()
+            )
+        );
     }
 
     /**
@@ -47,10 +55,16 @@ class PooStatService
      */
     public function poosThisMonth(User $user): int
     {
-        return $this->repository->countInDateRange(
-            $user,
-            now()->startOfMonth(),
-            now());
+        $month = now()->format('Y-m');
+
+        return Cache::rememberForever(
+            "poo:stats:{$user->id}:month:{$month}",
+            fn () => $this->repository->countInDateRange(
+                $user,
+                now()->startOfMonth(),
+                now()
+            )
+        );
     }
 
     /**
@@ -61,24 +75,31 @@ class PooStatService
      */
     public function averagePoosPerDay(User $user): float
     {
-        $totalPoos = $this->poosTotal($user);
+        $day = now()->toDateString();
 
-        if ($totalPoos === 0) {
-            return 0.0;
-        }
+        return Cache::rememberForever(
+            "poo:stats:{$user->id}:average:{$day}",
+            function () use ($user) {
 
-        // Get the date of the first Poo entry
-        $firstEntry = $this->repository->first($user);
+                $totalPoos = $this->poosTotal($user);
 
-        if (! $firstEntry) {
-            return 0.0;
-        }
+                if ($totalPoos === 0) {
+                    return 0.0;
+                }
 
-        // Calculate the number of days since the first entry (inclusive)
-        $daysSinceFirstEntry = abs(now()->diffInDays($firstEntry->occurred_at)) + 1;
+                $firstEntry = $this->repository->first($user);
 
-        // Calculate average with float precision
-        return round($totalPoos / $daysSinceFirstEntry, 2);
+                if (! $firstEntry) {
+                    return 0.0;
+                }
+
+                $days = now()
+                    ->startOfDay()
+                    ->diffInDays($firstEntry->occurred_at->startOfDay(), absolute: true) + 1;
+
+                return round($totalPoos / $days, 2);
+            }
+        );
 
     }
 }

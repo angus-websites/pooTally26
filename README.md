@@ -23,6 +23,7 @@ PooTally26 is the 2026 version of PooTally, a web application for tracking poos
     - [Build and run with Docker Compose](#build-and-run-with-docker-compose)
     - [Database](#database)
 - [Getting started locally (without Docker)](#getting-started-locally-without-docker)
+- [Previewing Emails](#previewing-emails)
 - [Admin Panel](#admin-panel)
     - [Creating an Admin User](#creating-an-admin-user)
     - [Admins in Production](#admins-in-production)
@@ -123,6 +124,25 @@ the `docker-compose.yml` file to use a persistent database.
     ```bash
     php artisan serve
     ```
+
+## Previewing Emails
+
+The easiest way to preview emails locally is to use MailTrap. You can run a local SMTP server using Docker:
+
+```bash
+docker run -p 1025:1025 -p 8025:8025 axllent/mailpit
+```
+
+You can then configure your `.env` file to use MailPit as your mail driver:
+
+```
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_ENCRYPTION=null
+```
+
+and then follow the link in the console to preview password reset emails and other emails sent by the application.
 
 ## Admin Panel
 

@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enum\PooColour;
 use App\Enum\PooConsistency;
+use App\Observers\PooEntryObserver;
 use Database\Factories\PooEntryFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +15,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int $user_id
  * @property Carbon $occurred_at
  * @property ?PooConsistency $consistency
  * @property ?PooColour $colour
@@ -21,6 +24,8 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $updated_at
  *
  */
+
+#[ObservedBy([PooEntryObserver::class])]
 class PooEntry extends Model
 {
     /** @use HasFactory<PooEntryFactory> */

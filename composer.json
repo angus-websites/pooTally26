@@ -1,7 +1,7 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "angusgoody/pootally26",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "type": "project",
     "description": "A site to track poos",
     "keywords": [
@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.10",
         "livewire/flux-pro": "^2.10",
-        "livewire/livewire": "^4.0"
+        "livewire/livewire": "^4.0",
+        "mailjet/laravel-mailjet": "^3.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -27,10 +27,12 @@ new class extends Component {
     {
         return [
             'colour' => [
+                'required',
                 Rule::in(array_column(PooColour::cases(), 'value')),
             ],
 
             'consistency' => [
+                'required',
                 Rule::in(array_column(PooConsistency::cases(), 'value')),
             ],
 
@@ -141,7 +143,7 @@ new class extends Component {
         Flux::modal('new-poo-entry')->close();
 
         // Reset form
-        $this->reset();
+        $this->mount();
     }
 
 };

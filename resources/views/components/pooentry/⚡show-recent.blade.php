@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\PooEntryService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -9,18 +10,15 @@ new class extends Component {
 
     public Collection $entries;
 
-    public function mount(): void
+    public function mount(PooEntryService $service): void
     {
-        $this->refreshEntries();
+        $this->refreshEntries($service);
     }
 
     #[On('poo-entry:refresh')]
-    public function refreshEntries(): void
+    public function refreshEntries(PooEntryService $service): void
     {
-        $this->entries = Auth::user()->pooEntries()
-            ->latest('occurred_at')
-            ->limit(5)
-            ->get();
+        $this->entries = $service->latestForUser(Auth::user());
     }
 
 
@@ -43,7 +41,7 @@ new class extends Component {
             </div>
             @if($entry->notes)
                 <div class="mt-3 border-t pt-2 dark:border-t-zinc-600">
-                    <flux:text >
+                    <flux:text>
                         <span>Notes:</span> <span class="ml-1">{{$entry->notes}}</span>
                     </flux:text>
                 </div>
