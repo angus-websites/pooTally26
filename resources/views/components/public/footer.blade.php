@@ -23,8 +23,7 @@
                 </flux:tooltip>
             </div>
             <p x-data="{}" class="mt-8 text-base text-gray-500 md:order-1 md:mt-0 text-center">
-                &copy; {{ date('Y') }}
-                PooTally | Designed by Angus Goody
+                &copy; {{ date('Y') }} PooTally | <flux:link wire:navigate href="{{route('privacy-policy')}}" variant="ghost">Privacy Policy</flux:link> | Designed by Angus Goody
             </p>
         </div>
     </x-container>
