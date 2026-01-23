@@ -46,7 +46,7 @@ PooTally26 is the 2026 version of PooTally, a web application for tracking poos
 
 ## Paid Dependencies
 
-Poo26 uses [FluxUi](https://fluxui.dev/) pro components for the user interface. This is a paid package and a license is
+pooTally26 uses [FluxUi](https://fluxui.dev/) pro components for the user interface. This is a paid package and a license is
 required to install the components from their private repository.
 
 If you have a license you can create an auth.json file with your credentials.
@@ -82,8 +82,15 @@ Visit [http://127.0.0.1:8000](http://127.0.0.1:8000 ) in your web browser to acc
 
 ### Database
 
-This will use a sqlite in memory database, so any data will be lost when the container is stopped. To avoid this modify
-the `docker-compose.yml` file to use a persistent database.
+The compose file includes a MySQL database service configured to persist data in a Docker volume.
+
+### Mailpit
+
+The compose file also includes a Mailpit service for previewing emails sent by the application. You can access the Mailpit web interface at [http://localhost:8025/]
+
+### Redis
+
+The compose file includes a Redis service used for caching and session management.
 
 ## Getting started locally (without Docker)
 
@@ -127,7 +134,7 @@ the `docker-compose.yml` file to use a persistent database.
 
 ## Previewing Emails
 
-The easiest way to preview emails locally is to use MailTrap. You can run a local SMTP server using Docker:
+The easiest way to preview emails locally is to use MailPit. You can run a local SMTP server using Docker:
 
 ```bash
 docker run -p 1025:1025 -p 8025:8025 axllent/mailpit
@@ -196,15 +203,15 @@ This workflow expects the following secrets to be set in the `Production` enviro
 1. `COMPOSER_AUTH` - The contents of your `auth.json` file for installing paid dependencies, note this secret MUST be a
    single line JSON string otherwise the workflow will fail.
 2. `CAP_SERVER_URL` - The base URL of your CapRover server e.g `https://captain.yourdomain.com`
-3. `CAP_APP_NAME` - The name of the app on your CapRover server e.g `poo26`
+3. `CAP_APP_NAME` - The name of the app on your CapRover server e.g `pooTally26`
 4. `CAP_APP_TOKEN` - The token for your CapRover app
 
 ## Testing
 
-Poo26 uses PestPHP for testing. Tests are split into Feature and Unit tests located in the `tests/Feature` and
+pooTally26 uses PestPHP for testing. Tests are split into Feature and Unit tests located in the `tests/Feature` and
 `tests/Unit` directories respectively.
 
-Poo26 also makes use of Pest's snapshot testing capabilities for UI components. Snapshots are stored in the
+pooTally26 also makes use of Pest's snapshot testing capabilities for UI components. Snapshots are stored in the
 `tests/.pest` directory.
 
 ### Running all tests
@@ -229,10 +236,10 @@ Build the docker image with secret auth.json manually ...
 DOCKER_BUILDKIT=1
 docker build \
   --secret id=composer_auth,src=auth.json \
-  -t poo26 .
+  -t pooTally26 .
 ```
 
 ### Trusted proxies
 
-Poo26 is currently configured to trust all proxies by default. If you need to restrict this, you can modify the
+pooTally26 is currently configured to trust all proxies by default. If you need to restrict this, you can modify the
 `bootstrap/app.php` `trustProxies` method.
