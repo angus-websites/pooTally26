@@ -9,6 +9,9 @@ Route::get('/', function () {
     return view('public.home');
 })->name('home');
 
+// Privacy Policy
+Route::get('/privacy-policy', [App\Http\Controllers\AboutController::class, 'privacyPolicy'])->name('privacy-policy');
+
 // App Routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
