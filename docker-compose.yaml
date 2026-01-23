@@ -1,6 +1,6 @@
 services:
   app:
-    image: poo-tally-26
+    image: local/poo-tally-26
     container_name: pooTally26-app
     build:
       context: .
