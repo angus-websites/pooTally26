@@ -19,6 +19,7 @@ services:
       REDIS_HOST: redis
       REDIS_PASSWORD: null
       REDIS_PORT: 6379
+      REDIS_PREFIX: pootally_
 
       # Database (MySQL)
       DB_CONNECTION: mysql
