@@ -4,7 +4,7 @@
 php artisan route:clear
 php artisan config:clear
 php artisan view:clear
-php artisan filament:optimize
+#php artisan filament:optimize
 
 # Migrate the database
 php artisan migrate --force

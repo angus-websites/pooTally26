@@ -1,0 +1,21 @@
+services:
+  app:
+    image: poo-tally-26
+    container_name: pooTally26-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - composer_auth
+    env_file:
+      - .env.example
+    environment:
+      APP_KEY: base64:YZ2w1r0DV2J5QDERTYUCjJenuukcTjnua+UrZNGSIsw=
+      APP_DEBUG: 'false'
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+secrets:
+  composer_auth:
+    file: ./auth.json
