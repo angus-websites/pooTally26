@@ -1,21 +1,83 @@
 services:
   app:
     image: local/poo-tally-26
-    container_name: pooTally26-app
+    container_name: poo-tally-26-app
     build:
       context: .
       dockerfile: Dockerfile
       secrets:
         - composer_auth
-    env_file:
-      - .env.example
     environment:
+      APP_NAME: PooTally (Docker)
+      APP_ENV: production
       APP_KEY: base64:YZ2w1r0DV2J5QDERTYUCjJenuukcTjnua+UrZNGSIsw=
-      APP_DEBUG: 'false'
+      APP_DEBUG: false
+      APP_URL: http://127.0.0.1:8123
+
+      # Cache & Redis
+      CACHE_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PASSWORD: null
+      REDIS_PORT: 6379
+
+      # Database (MySQL)
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: poo_tally
+      DB_USERNAME: poo_user
+      DB_PASSWORD: secret
+
+      # Mail (Mailpit)
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: null
+      MAIL_FROM_ADDRESS: no-reply@pootally.test
+      MAIL_FROM_NAME: PooTally
+
     ports:
-      - "8000:8000"
+      - "8123:8000"
+    depends_on:
+      - redis
+      - mysql
+      - mailpit
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: poo-tally-26-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.1
+    container_name: poo-tally-26-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootsecret
+      MYSQL_DATABASE: poo_tally
+      MYSQL_USER: poo_user
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: poo-tally-26-mailpit
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
     restart: unless-stopped
 
 secrets:
   composer_auth:
     file: ./auth.json
+
+volumes:
+  mysql-data:
