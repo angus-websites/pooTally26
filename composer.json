@@ -1,7 +1,7 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "angusgoody/pootally26",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "type": "project",
     "description": "A site to track poos",
     "keywords": [
