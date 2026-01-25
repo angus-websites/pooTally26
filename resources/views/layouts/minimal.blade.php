@@ -1,7 +1,7 @@
 <x-layouts::master>
     @section('title', $title ?? null)
     <div class="min-h-screen flex flex-col">
-        <x-public.header/>
+        <x-public.header-minimal/>
         <div class="flex-1 flex">
             {{ $slot }}
         </div>
