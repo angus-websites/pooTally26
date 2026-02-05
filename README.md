@@ -10,7 +10,6 @@ PooTally26 is the 2026 version of PooTally, a web application for tracking poos
 - Laravel 12
 - TailwindCSS v4
 - Livewire 4
-- Filament Admin Panel
 - PestPHP 4 for testing
 - FluxUi components
 
@@ -24,9 +23,6 @@ PooTally26 is the 2026 version of PooTally, a web application for tracking poos
     - [Database](#database)
 - [Getting started locally (without Docker)](#getting-started-locally-without-docker)
 - [Previewing Emails](#previewing-emails)
-- [Admin Panel](#admin-panel)
-    - [Creating an Admin User](#creating-an-admin-user)
-    - [Admins in Production](#admins-in-production)
 - [GitHub Actions](#github-actions)
     - [CI Workflow (`ci.yaml`)](#ciyaml)
     - [CD Workflow (`cd.yaml`)](#cdyaml)
@@ -150,26 +146,6 @@ MAIL_ENCRYPTION=null
 ```
 
 and then follow the link in the console to preview password reset emails and other emails sent by the application.
-
-## Admin Panel
-
-The admin panel is built using FilamentPHP. To access the admin panel, navigate to
-Visit [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin ) in your web browser.
-
-### Creating an Admin User
-
-You can create an admin user using the following Artisan command:
-
-```bash
-php artisan make:filament-user
-```
-
-This will prompt you to enter a name, email, and password for the new admin user.
-
-### Admins in Production
-
-In production, you can set the `ADMIN_EMAIL` environment variable in your `.env` file to specify the email address of
-the admin user. This will restrict access to the admin panel to only that email address.
 
 ## GitHub Actions
 
